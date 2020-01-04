@@ -1,32 +1,23 @@
-const http = require('http');
+const restify = require('restify');
+const mongoose = require('mongoose');
+const config = require('./config');
 
-const server = http.createServer(function(req, res) {
-  if (req.url === '/login') {
-    let body = [];
-    req.on('data', chunk => {
-      body.push(chunk);
-    });
-    req.on('end', () => {
-      const { username, passwd } = JSON.parse(Buffer.concat(body).toString());
-      if (username === 'admin' && passwd === 'admin') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            token: Math.random().toFixed(10),
-            username: 'admin',
-          })
-        );
-      } else {
-        res.writeHead(401, { 'Content-Type': 'text/plain' });
-        res.end('帳號或密碼錯誤');
-      }
+const server = restify.createServer();
 
-      res.end();
-    });
-  }
+// Middleware
+server.use(restify.plugins.bodyParser());
+
+server.listen(config.PORT, () => {
+  mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, function() {
-  console.log('server running...');
+const db = mongoose.connection;
+
+db.on('error', error => {
+  console.log(error);
+});
+
+db.once('open', () => {
+  require('./routes/user')(server);
+  console.log(`Server started on port ${config.PORT}`);
 });
