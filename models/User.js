@@ -2,7 +2,7 @@ const mogoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 
 const UserSchema = new mogoose.Schema({
-  name: {
+  username: {
     type: String,
     require: true,
     trim: true,

@@ -5,4 +5,5 @@ module.exports = {
   MONGODB_URI:
     process.env.MONGODB_URI ||
     'mongodb+srv://admin:ding5802@restaurants-xcrls.mongodb.net/test?retryWrites=true&w=majority',
+  JWT_SECRET: process.env.JWT_SECRET || 'secret1',
 };
