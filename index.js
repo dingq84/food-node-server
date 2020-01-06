@@ -7,6 +7,7 @@ const server = restify.createServer();
 
 // Middleware
 server.use(restify.plugins.bodyParser());
+server.use(restify.plugins.queryParser());
 // server.use(restify.plugins.multipartBodyParser());
 const cors = corsMiddleware({
   // origins: ['*'],
@@ -19,7 +20,14 @@ server.use(cors.actual);
 
 server.use(
   rjwt({ secret: config.JWT_SECRET }).unless({
-    path: ['/login', '/signup', '/search', '/resetPassword'],
+    path: [
+      '/login',
+      '/logout',
+      '/storeDetail',
+      '/signup',
+      '/search',
+      '/resetPassword',
+    ],
   })
 );
 

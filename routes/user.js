@@ -71,4 +71,19 @@ module.exports = server => {
     res.end();
     next();
   });
+
+  // get profile
+  server.get('/profile', (req, res, next) => {
+    try {
+      const { user } = req;
+      res.send({
+        mail: user.mail,
+        birthyear: user.birthyear,
+        sexual: user.sexual,
+      });
+      next();
+    } catch (error) {
+      return next(new errors.InternalError(err.message));
+    }
+  });
 };
