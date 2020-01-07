@@ -21,6 +21,7 @@ server.use(cors.actual);
 server.use(
   rjwt({ secret: config.JWT_SECRET }).unless({
     path: [
+      '/',
       '/login',
       '/logout',
       '/storeDetail',

@@ -6,6 +6,10 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 module.exports = server => {
+  server.get('/', (req, res, next) => {
+    res.send(process.env.MONGODB_URI);
+    next();
+  });
   // login
   server.post('/login', async (req, res, next) => {
     if (!req.is('application/json')) {
